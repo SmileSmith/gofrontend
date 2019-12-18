@@ -1,50 +1,43 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app fixed clipped-left color="primary" dark>
+      <v-app-bar-nav-icon class="hidden-lg-and-up" @click.stop="showNavDrawer = !showNavDrawer"></v-app-bar-nav-icon>
       <div class="d-flex align-center">
         <v-img
-          alt="Vuetify Logo"
+          alt="Logo"
           class="shrink mr-2"
           contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+          src="./assets/logo.png"
           transition="scale-transition"
           width="40"
         />
 
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <v-toolbar-title>Go Frontend</v-toolbar-title>
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>fas fa-external-link-alt</v-icon>
+      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
+        <span class="mr-2">Github</span>
+        <v-icon>mdi-open-in-new</v-icon>
       </v-btn>
     </v-app-bar>
-
-    <v-content>
+    <Navigation v-model="showNavDrawer"></Navigation>
+    <v-content app>
+      <v-breadcrumbs :items="items" divider="/"></v-breadcrumbs>
       <router-view />
     </v-content>
   </v-app>
 </template>
 
 <script>
+import Navigation from './components/Navigation';
 export default {
-  name: "App",
-
+  name: 'App',
+  components: { Navigation },
   data: () => ({
-    //
-  })
+    showNavDrawer: true,
+    items: [],
+  }),
 };
 </script>
