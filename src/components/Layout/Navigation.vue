@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app fixed clipped v-bind:value="showNavDrawer" v-on:input="$emit('change', $event)">
+  <v-navigation-drawer app fixed clipped v-model="app.showNavDrawer">
     <template v-slot:prepend>
       <v-list>
         <v-list-item>
@@ -23,7 +23,7 @@
     <v-divider></v-divider>
 
     <v-list nav dense>
-      <v-list-item link v-for="nav in navList" :key="nav.title">
+      <v-list-item link v-for="nav in navList" :key="nav.title" @click.stop="goNav(nav)">
         <v-list-item-icon>
           <v-icon>{{ nav.icon }}</v-icon>
         </v-list-item-icon>
@@ -34,19 +34,24 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 // @see https://dev.materialdesignicons.com/icons
 const navList = [
   {
     icon: 'mdi-image-multiple',
     title: '我的图床',
+    path: 'image',
   },
   {
     icon: 'mdi-post',
     title: '我的文章',
+    path: 'blog',
   },
   {
     icon: 'mdi-tools',
     title: '我的工具',
+    path: 'tool',
   },
 ];
 
@@ -65,5 +70,11 @@ export default {
   data: () => ({
     navList,
   }),
+  computed: mapState(['app']),
+  methods: {
+    goNav(nav) {
+      this.$router.push({ path: nav.path });
+    },
+  },
 };
 </script>
