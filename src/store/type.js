@@ -1,0 +1,1 @@
+export const SWITCH_NAV_DRAWER = 'SWITCH_NAV_DRAWER';

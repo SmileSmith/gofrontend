@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app fixed clipped v-model="app.showNavDrawer">
+  <v-navigation-drawer app fixed clipped v-model="showNavDrawer">
     <template v-slot:prepend>
       <v-list>
         <v-list-item>
@@ -35,6 +35,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import { SWITCH_NAV_DRAWER } from '../../store/type';
 
 // @see https://dev.materialdesignicons.com/icons
 const navList = [
@@ -57,20 +58,20 @@ const navList = [
 
 export default {
   name: 'Navigation',
-  model: {
-    prop: 'showNavDrawer',
-    event: 'change',
-  },
-  props: {
-    showNavDrawer: {
-      type: Boolean,
-      default: true,
-    },
-  },
   data: () => ({
     navList,
   }),
-  computed: mapState(['app']),
+  computed: {
+    ...mapState(['app']),
+    showNavDrawer: {
+      get() {
+        return this.$store.state.app.showNavDrawer;
+      },
+      set(value) {
+        this.$store.commit(SWITCH_NAV_DRAWER, value);
+      },
+    },
+  },
   methods: {
     goNav(nav) {
       this.$router.push({ path: nav.path });
