@@ -10,7 +10,7 @@ on:
 # a workflow contain some jobs
 jobs:
   build:
-    name: BUILD WEBSITE
+    name: BUILD WEBSITE TO DEPLOY
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,19 +30,12 @@ jobs:
         npm run test:unit
       env:
         CI: true
-
-  deploy: 
-    name: DEPLOY WEBSITE
-    needs: [build]
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: ftp
-        run: |
-          npm run deploy $ftp_ip $ftp_port $ftp_user $ftp_pwd
-        env: # environment variable
-          ftp_ip: ${{ secrets.ftp_ip }}
-          ftp_port: 22
-          ftp_user: ${{ secrets.ftp_user }}
-          ftp_pwd: ${{ secrets.ftp_pwd }}
+    - name: npm deploy
+      run: |
+        npm run deploy $ftp_ip $ftp_port $ftp_user $ftp_pwd
+      env:
+        ftp_ip: ${{ secrets.ftp_ip }}
+        ftp_port: 22
+        ftp_user: ${{ secrets.ftp_user }}
+        ftp_pwd: ${{ secrets.ftp_pwd }}
     
