@@ -3,7 +3,7 @@
   "short_name": "gofrontend",
   "icons": [
     {
-      "src": "./img/logo.png",
+      "src": "./img/favicon-141x141.png",
       "sizes": "141x141",
       "type": "image/png"
     }
