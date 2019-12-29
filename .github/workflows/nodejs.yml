@@ -1,4 +1,4 @@
-name: Node CI
+name: BUILD & DEPLOY
 
 # trigger workflow when push on master branch
 on: 
@@ -10,7 +10,7 @@ on:
 # a workflow contain some jobs
 jobs:
   build:
-    name: BUILD WEBSITE TO DEPLOY
+    name: TEST WEBSITE
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,10 +30,28 @@ jobs:
         npm run test:unit
       env:
         CI: true
-    - name: npm deploy
+
+  deploy: 
+    name: DEPLOY WEBSITE
+    needs: [build]
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: Use Node.js 12.x
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: npm install, build
+      run: |
+        npm ci
+        npm run build --if-present
+      env:
+        CI: true
+    - name: ftp
       run: |
         npm run deploy $ftp_ip $ftp_port $ftp_user $ftp_pwd
-      env:
+      env: # environment variable
         ftp_ip: ${{ secrets.ftp_ip }}
         ftp_port: 22
         ftp_user: ${{ secrets.ftp_user }}
